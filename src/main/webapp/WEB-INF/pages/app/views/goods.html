@@ -1,0 +1,255 @@
+<!--<div id="message">-->
+    <!--<div style="padding: 5px;">-->
+        <!--<div id="inner-message" class="alert alert-error">-->
+            <!--<button type="button" class="close" data-dismiss="alert">&times;</button>-->
+            <!--test error message-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div class="row">
+    <div class="col-md-6">
+        <!--         Goods panel start-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title ">Товары</h1>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!--                         Goods list panel start-->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <!--                                Add new goods input and button start-->
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-ng-model="newGoods.name">
+                                      <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button" ng-click="addItem(newGoods,'goods')">
+                                            Добавить
+                                        </button>
+                                      </span>
+                                </div>
+                                <!--                                Add new goods input and button end-->
+                            </div>
+                            <div class="panel-body">
+                                <!--                                Goods list start-->
+                                <div class="list-group scrollable">
+                                    <a class="list-group-item" ng-class="{'active': good == selectedGood}"
+                                       ng-repeat="good in goods | orderBy: goods.name | filter: newGoods.name"
+                                       ng-click="showGoodsPurchases(good)">{{good.name}}
+                                          <span class="glyphicon glyphicon-remove delete pull-right"
+                                                ng-show="good == selectedGood"
+                                                ng-click="removeItem(good, false, 'goods', $event)"></span>
+                                        <span class="glyphicon glyphicon-pencil edit pull-right"
+                                              ng-show="good == selectedGood" ng-click="editItem(good, 'goods', $event)"></span>
+                                    </a>
+                                </div>
+                                <!--                                Goods list end-->
+                            </div>
+                            <div class="panel-footer">
+                                <!--                                Total label and filter input start-->
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <h4><span class="label label-default">Всего: {{filteredGoods.length}}</span>
+                                        </h4>
+                                    </div>
+                                    <!--<div class="col-lg-8">-->
+                                        <!--<input type="text" class="form-control" placeholder="Фильтр:"-->
+                                               <!--data-ng-model="filterGoods">-->
+                                    <!--</div>-->
+                                </div>
+                                <!--                                Total label and filter input end-->
+                            </div>
+                        </div>
+                        <!--                        Goods list panel end-->
+                    </div>
+                    <div class="col-md-6">
+                        <!--                        Purchases for goods table start-->
+                        <div class="panel panel-default" ng-hide="goodsPurchases.length == 0">
+                            <div class="panel-heading">
+                                <table class="table table-condensed  panel-title" style="table-layout:fixed">
+                                    <thead>
+                                    <tr>
+                                        <th ng-click="doSort('shopName')">Магазин</th>
+                                        <th ng-click="doSort('price')">Цена, руб</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="panel-body">
+                                <div class="scrollable">
+                                    <table class="table" style="table-layout:fixed">
+                                        <tbody>
+                                        <tr ng-repeat="goodsPurchase in goodsPurchases | orderBy:
+                                                           sortBy:reverse | filter: filterGoodsPurchase">
+                                            <td>{{goodsPurchase.shopName}}</td>
+                                            <td>{{goodsPurchase.price | currency:" "}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <h4><span class="label label-default">Всего: {{goodsPurchases.length}}</span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        Purchases for goods table end-->
+                        <div class="center">
+                            <h2><span ng-show="goodsPurchases.length == 0 && selectedGood"
+                                      class="label label-default">Нет покупок</span>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <!--         Shop panel start-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title ">Магазины</h1>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!--                         Shop list panel start-->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <!--                                Add new shops input and button start-->
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-ng-model="newShop.name">
+                                      <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button" ng-click="addItem(newShop,'shop')">Добавить</button>
+                                      </span>
+                                </div>
+                                <!--                                Add new Shop input and button end-->
+                            </div>
+                            <div class="panel-body">
+                                <!--                                Shop list start-->
+                                <div class="list-group scrollable">
+                                    <a class="list-group-item" ng-class="{'active': shop == selectedShop}"
+                                       ng-repeat="shop in shops | orderBy: shop.name | filter: newShop.name"
+                                       ng-click="showShopsPurchases(shop)">{{shop.name}} 
+                                        <span class="glyphicon glyphicon-remove delete pull-right"
+                                              ng-show="shop == selectedShop"
+                                              ng-click="removeItem(shop, false, 'shop', $event)"></span>
+                                        <span class="glyphicon glyphicon-pencil edit pull-right"
+                                              ng-show="shop == selectedShop"
+                                              ng-click="editItem(shop, 'shop', $event)"></span>
+                                    </a>
+                                </div>
+                                <!--                                Shop list end-->
+                            </div>
+                            <div class="panel-footer">
+                                <!--                                Total label and filter input start-->
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <h4><span class="label label-default">Всего: {{filteredShop.length}}</span>
+                                        </h4>
+                                    </div>
+                                    <!--<div class="col-lg-8">-->
+                                        <!--<input type="text" class="form-control" placeholder="Фильтр:"-->
+                                               <!--data-ng-model="filterShop">-->
+                                    <!--</div>-->
+                                </div>
+                                <!--                                Total label and filter input end-->
+                            </div>
+                        </div>
+                        <!--                        Goods list panel end-->
+                    </div>
+                    <div class="col-md-6">
+                        <!--                        Purchases for shop table start-->
+                        <div class="panel panel-default" ng-hide="shopPurchases.length == 0">
+                            <div class="panel-heading">
+                                <table class="table table-condensed panel-title" style="table-layout:fixed">
+                                    <thead>
+                                    <tr>
+                                        <th ng-click="doSort('shopName')">Магазин</th>
+                                        <th ng-click="doSort('price')">Цена, руб</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="panel-body">
+                                <div class="scrollable">
+                                    <table class="table" style="table-layout:fixed">
+                                        <tbody>
+                                        <tr ng-repeat="shopPurchase in shopPurchases | orderBy:
+                                                           sortBy:reverse">
+                                            <td>{{shopPurchase.goodsName}}</td>
+                                            <td>{{shopPurchase.price | currency:" "}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <h4><span class="label label-default">Всего: {{shopPurchases.length}}</span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        Purchases for shops table end-->
+                        <div class="center">
+                            <h2><span ng-show="shopPurchases.length == 0 && selectedShop" class="label label-default">Нет покупок</span>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmDeleteItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Вы уверены?</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button id="removeItemBtn" type="button" class="btn btn-primary" data-dismiss="modal">Да</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="modal" id="editItems" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="newItemName" class="control-label"></label>
+                    <input type="text" class="form-control" id="newItemName">
+                  </div>
+                </form>     
+            </div>
+            <div class="modal-footer">
+                <button id="updateItemBtn" type="button" class="btn btn-primary">Да</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#editItems">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>

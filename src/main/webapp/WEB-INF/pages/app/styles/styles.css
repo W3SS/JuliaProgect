@@ -1,0 +1,40 @@
+th, td, a.list-group-item {
+/*	background-color: menu;*/
+	cursor: pointer;
+}
+
+.scr {  
+    height: 35% !important;
+    overflow-y: auto;
+}
+
+.delete:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.edit:hover {
+    color: #00FF00;
+    cursor: pointer;
+}
+
+.scrollable {
+    /*height: 70%;*/
+    height: 280px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.activeLine, .activeLine:hover{
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
+}
+
+.message {
+    position: fixed;
+    top: 3%;
+    left: 50%;
+    margin-left: -150px;
+    max-width: 400px;
+    z-index: 9999;
+}

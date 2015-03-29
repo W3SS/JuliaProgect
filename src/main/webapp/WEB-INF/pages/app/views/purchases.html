@@ -1,0 +1,121 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab">
+    <h3 class="panel-title">
+         <a data-toggle="collapse" href="" data-target="#collapseAddPurchase" aria-expanded="false">
+          Добавить покупку
+        </a>
+    </h3>
+  </div>
+  <div id="collapseAddPurchase" class="panel-collapse collapse" role="tabpanel">
+      <div class="panel-body">
+    <!--      Add new purchase form-->
+        <form class="form-inline">
+            <div class="form-group">
+                <label>Товар:</label>
+                <select class="form-control" data-ng-model="newGood" ng-options="good.name for good in goods">
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Цена:</label>
+                <input type="text" class="form-control" data-ng-model="newPrice"/>
+            </div>
+            <div class="form-group">
+                <label>Магазин:</label>
+                <select class="form-control" data-ng-model="newShop" ng-options="shop.name for shop in shops"></select>
+            </div>
+            <button class="btn btn-primary" ng-click="addRow(newGood, newPrice, newShop)">Добавить</button>
+          </form>
+      </div>
+    </div>
+</div>
+
+
+<div class="panel panel-default" style="height: 100%">
+  <div class="panel-heading" role="tab">
+       <h3 class="panel-title">
+         <a data-toggle="collapse" href="" data-target="#collapsePurchases" aria-expanded="true">
+            Покупки
+        </a>
+    </h3>
+  </div>
+<div id="collapsePurchases" class="panel-collapse collapse in" role="tabpanel">
+  <div class="panel-body">
+      <table class="table table-condensed" style="table-layout:fixed">
+        <thead>
+            <th ng-click="doSort('goodsName')">Товар</th>
+            <th ng-click="doSort('price')">Цена, руб</th>
+            <th ng-click="doSort('shopName')">Магазин</th>
+            <th ng-click="doSort('timestamp')">Дата</th>
+            <th>&nbsp;</th>
+        </thead>
+      </table>
+      <div class="scrollable">
+          <table class="table table-hover" style="table-layout:fixed">
+             <tbody>
+                <tr ng-repeat="purchase in purchases | orderBy: sortBy:reverse | filter: filterPurchase"
+                    ng-click="setSelectedPurchase(purchase)" ng-class="{'info': purchase == selectedPurchase}">
+                    <td>{{purchase.goodsName}}</td>
+                    <td>{{purchase.price | currency:" "}}</td>
+                    <td>{{purchase.shopName}}</td>
+                    <td>{{purchase.timestamp}}</td>
+                    <td class="center">
+                        <span class="glyphicon glyphicon-pencil edit" ng-click="editRow(purchase)"
+                                             ng-show="purchase == selectedPurchase"></span>
+                        <span class="glyphicon glyphicon-remove delete" ng-click="removeRow(purchase)"
+                                             ng-show="purchase == selectedPurchase"></span>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-lg-4">
+                <h4><span class="label label-default">Всего: {{purchases.length}}</span>
+                </h4>
+            </div>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" placeholder="Фильтр:"
+                       data-ng-model="filterPurchase.goodsName">
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editPurchase" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form">
+                    <div class="form-group">
+                        <label>Товар:</label>
+                        <select id="editPurchaseGood" class="form-control">
+                            <option ng-repeat= "good in goods" value ="{{good.id}}">{{good.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Цена:</label>
+                        <input id="editPurchasePrice" type="text" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Магазин:</label>
+                        <select id="editPurchaseShop" class="form-control">
+                           <option ng-repeat= "shop in shops" value ="{{shop.id}}">{{shop.name}}</option>
+                        </select>
+                    </div>
+                </form>    
+            </div>
+            <div class="modal-footer">
+                <button id="updatePurchaseBtn" type="button" class="btn btn-primary">Да</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
